@@ -40,7 +40,6 @@ export async function unwrap<A>(te: TaskEither<ApprovioError, A>): Promise<A> {
  * Formats an error for display.
  */
 export function formatError(error: ApprovioError): string {
-  console.error(error)
   if (error instanceof Error) return error.message
 
   return `${error.message} (error code: ${error.code})`

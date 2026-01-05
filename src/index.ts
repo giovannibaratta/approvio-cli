@@ -2,6 +2,7 @@ import {Command} from "@commander-js/extra-typings"
 import chalk from "chalk"
 import {registerUserCommands} from "./commands/user"
 import {registerAuthCommands} from "./commands/auth"
+import {registerAgentCommands} from "./commands/agent"
 
 const program = new Command()
 
@@ -10,6 +11,7 @@ program.name("approvio").description("Approvio CLI tool").version("0.0.1")
 // Register commands
 registerAuthCommands(program)
 registerUserCommands(program)
+registerAgentCommands(program)
 
 process.on("uncaughtException", error => {
   console.error(chalk.red(error.message))
