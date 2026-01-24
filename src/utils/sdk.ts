@@ -30,10 +30,14 @@ export function getClient() {
  */
 export async function unwrap<A>(te: TaskEither<ApprovioError, A>): Promise<A> {
   const result = await te()
-  if (E.isLeft(result)) {
-    throw result.left
-  }
+
+  if (E.isLeft(result)) handleLeft(result.left)
   return result.right
+}
+
+function handleLeft(error: ApprovioError): never {
+  if (error instanceof Error) throw error
+  throw new Error(formatError(error))
 }
 
 /**
@@ -41,6 +45,5 @@ export async function unwrap<A>(te: TaskEither<ApprovioError, A>): Promise<A> {
  */
 export function formatError(error: ApprovioError): string {
   if (error instanceof Error) return error.message
-
   return `${error.message} (error code: ${error.code})`
 }
