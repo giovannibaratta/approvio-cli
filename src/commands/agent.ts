@@ -1,6 +1,6 @@
 import {Command} from "@commander-js/extra-typings"
 import chalk from "chalk"
-import {formatError, getClient} from "../utils/sdk"
+import {formatError, getUserClient} from "../utils/sdk"
 import {pipe} from "fp-ts/lib/function"
 import * as TE from "fp-ts/TaskEither"
 import path from "path"
@@ -14,7 +14,7 @@ export function registerAgentCommands(program: Command) {
     .description("Create a new agent")
     .requiredOption("-n, --name <name>", "Agent name")
     .action(async options => {
-      const client = getClient()
+      const client = getUserClient()
       await pipe(
         TE.Do,
         TE.bind("agentName", () => TE.right(options.name)),

@@ -2,7 +2,7 @@ import {Command} from "@commander-js/extra-typings"
 import chalk from "chalk"
 import {pipe} from "fp-ts/function"
 import * as TE from "fp-ts/TaskEither"
-import {getClient, formatError} from "../utils/sdk"
+import {getUserClient, formatError} from "../utils/sdk"
 import {UserSummary} from "@approvio/api"
 
 export function registerUserCommands(program: Command) {
@@ -16,7 +16,7 @@ export function registerUserCommands(program: Command) {
     .option("-p, --page <number>", "Page number", "1")
     .option("-l, --limit <number>", "Limit per page", "20")
     .action(async (options: {search?: string; page: string; limit: string}) => {
-      const client = getClient()
+      const client = getUserClient()
       await pipe(
         client.listUsers({
           search: options.search,

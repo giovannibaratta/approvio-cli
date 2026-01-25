@@ -1,9 +1,16 @@
-import {ApprovioUserClient, UserAuthenticator, ApprovioError} from "@approvio/ts-sdk"
+import {
+  ApprovioUserClient,
+  UserAuthenticator,
+  ApprovioError,
+  AgentAuthenticator,
+  ApprovioAgentClient
+} from "@approvio/ts-sdk"
+import fs from "node:fs"
 import {configManager} from "../config-manager/config-manager"
 import * as E from "fp-ts/Either"
 import {TaskEither} from "fp-ts/TaskEither"
 
-export function getClient() {
+export function getClient(): ApprovioUserClient | ApprovioAgentClient {
   const profile = configManager.getActiveProfileOrThrow()
 
   const endpoint = profile.endpoint
@@ -20,9 +27,38 @@ export function getClient() {
       return new ApprovioUserClient({endpoint}, auth)
     }
     case "agent": {
-      throw new Error("Agent authentication is not supported yet")
+      const privateKey = fs.readFileSync(profile.privateKeyPath, "utf-8")
+      const auth = new AgentAuthenticator(
+        endpoint,
+        privateKey,
+        profile.accessToken,
+        profile.refreshToken,
+        onTokenRefreshed
+      )
+
+      return new ApprovioAgentClient({endpoint}, auth)
     }
   }
+}
+
+/**
+ * Returns an ApprovioUserClient, throwing an error if the active profile is an agent.
+ */
+export function getUserClient(): ApprovioUserClient {
+  const client = getClient()
+  if (!(client instanceof ApprovioUserClient))
+    throw new Error("This command requires a human user profile. Please switch to a user profile or log in.")
+
+  return client
+}
+
+/**
+ * Returns an ApprovioAgentClient, throwing an error if the active profile is not an agent.
+ */
+export function getAgentClient(): ApprovioAgentClient {
+  const client = getClient()
+  if (!(client instanceof ApprovioAgentClient)) throw new Error("This command requires an agent profile.")
+  return client
 }
 
 /**

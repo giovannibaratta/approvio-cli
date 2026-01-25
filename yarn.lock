@@ -17,7 +17,7 @@ __metadata:
   resolution: "@approvio/cli@workspace:."
   dependencies:
     "@approvio/api": "npm:0.0.19"
-    "@approvio/ts-sdk": "npm:0.0.5"
+    "@approvio/ts-sdk": "npm:0.0.6"
     "@commander-js/extra-typings": "npm:14.0.0"
     "@types/jest": "npm:29.5.14"
     "@types/node": "npm:22.18.0"
@@ -42,16 +42,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@approvio/ts-sdk@npm:0.0.5":
-  version: 0.0.5
-  resolution: "@approvio/ts-sdk@npm:0.0.5"
+"@approvio/ts-sdk@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@approvio/ts-sdk@npm:0.0.6"
   dependencies:
     "@approvio/api": "npm:0.0.19"
     axios: "npm:1.13.2"
     fp-ts: "npm:2.16.11"
     io-ts: "npm:2.2.22"
     jose: "npm:6.1.3"
-  checksum: 10/7664583519608c92d26f4df22a143de02ec0f00656dcb6090e07b37b0302cd947bdd9bcd912e6bac1e6d02a1dfef9ada1e7cde3f327662bb30050d8ab1fdfede
+  checksum: 10/9d1e6941ba2f3e0acdb83d2b4a3f63eebed2fa9e79a0063c76b93ee6ecb2545e5c822f5e021b4c6239c7fd6169939db9fba470153e90aec216a31f867fa6dd49
   languageName: node
   linkType: hard
 
