@@ -8,7 +8,9 @@ import {
 import fs from "node:fs"
 import {configManager} from "../config-manager/config-manager"
 import * as E from "fp-ts/Either"
-import {TaskEither} from "fp-ts/TaskEither"
+import {pipe} from "fp-ts/function"
+import * as TE from "fp-ts/TaskEither"
+import chalk from "chalk"
 
 export function getClient(): ApprovioUserClient | ApprovioAgentClient {
   const profile = configManager.getActiveProfileOrThrow()
@@ -64,7 +66,7 @@ export function getAgentClient(): ApprovioAgentClient {
 /**
  * Unwraps a TaskEither, throwing the error if it's a Left.
  */
-export async function unwrap<A>(te: TaskEither<ApprovioError, A>): Promise<A> {
+export async function unwrap<A>(te: TE.TaskEither<ApprovioError, A>): Promise<A> {
   const result = await te()
 
   if (E.isLeft(result)) handleLeft(result.left)
@@ -82,4 +84,26 @@ function handleLeft(error: ApprovioError): never {
 export function formatError(error: ApprovioError): string {
   if (error instanceof Error) return error.message
   return `${error.message} (error code: ${error.code})`
+}
+
+/**
+ * Handles a TaskEither, printing the error or executing the success callback.
+ */
+export async function handleTask<A>(
+  task: TE.TaskEither<ApprovioError, A>,
+  onSuccess: (data: A) => void | Promise<void>,
+  errorMessage: string
+): Promise<void> {
+  await pipe(
+    task,
+    TE.match(
+      error => {
+        console.error(chalk.red(`${errorMessage}:`), formatError(error))
+        process.exitCode = 1
+      },
+      async result => {
+        await onSuccess(result)
+      }
+    )
+  )()
 }

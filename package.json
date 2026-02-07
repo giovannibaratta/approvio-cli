@@ -15,18 +15,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "@approvio/api": "0.0.19",
-    "@approvio/ts-sdk": "0.0.6",
+    "@approvio/api": "0.0.23",
+    "@approvio/ts-sdk": "0.0.7",
     "@commander-js/extra-typings": "14.0.0",
     "ajv": "8.17.1",
     "axios": "1.13.2",
     "chalk": "5.4.1",
     "commander": "13.1.0",
+    "console-table-printer": "2.15.0",
     "fp-ts": "2.16.11",
-    "jose": "6.1.3"
+    "jose": "6.1.3",
+    "js-yaml": "^4.1.1"
   },
   "devDependencies": {
     "@types/jest": "29.5.14",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "22.18.0",
     "@typescript-eslint/eslint-plugin": "8.50.0",
     "@typescript-eslint/parser": "8.50.0",
